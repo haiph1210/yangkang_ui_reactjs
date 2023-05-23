@@ -9,36 +9,41 @@ const ListMenus = () => {
     const [imgUrls, setImgUrls] = useState("");
     const [menus, setMenus] = useState([]);
     const [filteredMenus, setFilteredMenus] = useState([]);
-    const [saveMenuToUpdate,setSaveMenuToUpdate] = useState(null);
+    const [saveMenuToUpdate, setSaveMenuToUpdate] = useState(null);
     const getAllMenus = async () => {
         const res = await findAll();
-        setMenus(res.responseData);
-        setFilteredMenus(res.responseData.content);
-    };
+        if (res && res.responseData && res.responseData.content) {
+            setMenus(res.responseData);
+            setFilteredMenus(res.responseData.content);
+        }
 
+    };
 
     const getAllBase64Image = async (id) => {
         const res = await loadListImages(id);
-        if(res) {
+        if (res) {
             const bodies = res.map((item) => item.body);
             return bodies;
-        }else{
+        } else {
             return "1";
         }
     };
 
+
     const handleFilter = (filter) => {
         const updatedFilteredMenus = filter;
         setFilteredMenus(updatedFilteredMenus);
-        console.log(filteredMenus);
     }
 
     const handleAffterAdd = () => {
         getAllMenus();
-        console.log("hi");
     }
 
-    const hanldeSaveDataToUpdate = (menuData) =>{
+    const handleAffterDelete = (datas) => {
+        const data = datas;
+        setFilteredMenus(data);
+    }
+    const hanldeSaveDataToUpdate = (menuData) => {
         const data = menuData;
         setSaveMenuToUpdate(data);
     }
@@ -47,6 +52,8 @@ const ListMenus = () => {
         getAllMenus();
     }, []);
 
+
+
     return (
         <Container className='' >
             <FilterMenu
@@ -54,26 +61,29 @@ const ListMenus = () => {
                 afterFilter={handleFilter}
             ></FilterMenu>
             <ModalRequest
-            afterAdd={handleAffterAdd}
-            menuData={saveMenuToUpdate}
+                afterAdd={handleAffterAdd}
+                menuData={saveMenuToUpdate}
             ></ModalRequest>
             <Row xs={1} md={3} className="g-sm-4 border mt-3 ms-0 me-0 handle-row">
                 {filteredMenus &&
                     filteredMenus.length > 0 &&
                     filteredMenus.map((item, index) => (
-                        <Col key={"Menu" +index}>
-                            <Menu
-                                id = {item.id}
-                                name={item.name}
-                                price={item.price}
-                                imgUrl={() => getAllBase64Image(item.id)}
-                                description={item.description}
-                                menuData={hanldeSaveDataToUpdate}
-                            />
+                        <Col key={"Menu" + index}>
+                            {item.id !== null ? (
+                                <Menu
+                                    id={item.id}
+                                    name={item.name}
+                                    price={item.price}
+                                    imgUrl={() => getAllBase64Image(item.id)}
+                                    description={item.description}
+                                    menuData={hanldeSaveDataToUpdate}
+                                    menuList={menus.content}
+                                    data={handleAffterDelete}
+                                />
+                            ) : null}
                         </Col>
                     ))}
             </Row>
-
         </Container>
     );
 };

@@ -18,19 +18,17 @@ const ModalRequest = ({ afterAdd, menuData }) => {
         const fileNames = values.map((file) => file.name);
         setFileName(fileNames);
     };
-    console.log(fileName);
-
 
     const handleSave = async (event) => {
         event.preventDefault();
         if (id === null) {
             const res = await createMenu(name, price, description, fileImage);
             if (res && res.responseData) {
-                console.log(res);
                 setName("");
                 setPrice("");
                 setDescription("");
                 setFileImage("");
+                setFileName("")
                 afterAdd();
                 toast.success(`Create new menu: ${name} successfully`);
             } else {
@@ -38,13 +36,13 @@ const ModalRequest = ({ afterAdd, menuData }) => {
             }
         } else {
             const res = await updateMenu(id, name, price, description, fileImage);
-            console.log(res);
             if (res && res.responseData) {
-                setId(null);
+                setId("");
                 setName("");
                 setPrice("");
                 setDescription("");
                 setFileImage("");
+                setFileName("")
                 afterAdd();
                 toast.success(`Update menu: ${name} successfully`);
             } else {
@@ -53,7 +51,6 @@ const ModalRequest = ({ afterAdd, menuData }) => {
         }
     }
     useEffect(() => {
-        console.log(menuData);
         if (menuData && menuData.isUpdate === true) {
             setId(menuData.id);
             setName(menuData.name);
@@ -138,12 +135,12 @@ const ModalRequest = ({ afterAdd, menuData }) => {
                             &nbsp;SendRequest</button>
                     </div>
                 </div>
-                <div className='ms-5 mb-5 mt-1'>
+                <div className='m-4'>
                     <select className="form-select form-select-sm" aria-label=".form-select-sm example">
                         {fileName &&
                             fileName.length > 0 &&
                             fileName.map((item, index) => (
-                                <option key={index} defaultValue={item}>
+                                <option className='' key={index} defaultValue={item}>
                                     {item}
                                 </option>
                             ))}

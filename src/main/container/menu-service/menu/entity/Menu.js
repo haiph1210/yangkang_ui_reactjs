@@ -4,11 +4,13 @@ import Card from 'react-bootstrap/Card';
 import ModalMenu from '../modal/ModalMenuDetail';
 import { toast } from 'react-toastify';
 import ImageSlider from '../silder/ImgSlider';
+import ModalCheckRemove from '../modal/ModalCheckRemove';
 
-const Menu = ({ id, name, price, imgUrl, description,menuData,hanldleDelete }) => {
+const Menu = ({ id, name, price, imgUrl, description, menuData,menuList,data }) => {
   const [showModal, setShowModal] = useState(false);
+  const [showModalCheck, setShowModalCheck] = useState(false);
   const [getImgUrl, setGetImgUrl] = useState("");
-  const [isUpdate,setIsUpdate] = useState(false);
+  const [isUpdate, setIsUpdate] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
       const base64Image = await imgUrl();
@@ -20,9 +22,13 @@ const Menu = ({ id, name, price, imgUrl, description,menuData,hanldleDelete }) =
   const hanldleUpdate = (event) => {
     event.preventDefault();
     setIsUpdate(true);
-    menuData({id,name,price,imgUrl,description,isUpdate: true})
+    menuData({ id, name, price, imgUrl, description, isUpdate: true })
   }
-  
+
+  const hanldleDelete = (event) => {
+    event.preventDefault();
+    setShowModalCheck(true);
+  }
   const hanldleMenuDetail = (event) => {
     event.preventDefault();
     setShowModal(true);
@@ -39,19 +45,19 @@ const Menu = ({ id, name, price, imgUrl, description,menuData,hanldleDelete }) =
           </Card.Text>
           <div className='d-flex'>
             <div className='ms-2'>
-              <Button 
-              variant="primary" 
-              onClick={(event) => hanldleMenuDetail(event)}>
+              <Button
+                variant="primary"
+                onClick={(event) => hanldleMenuDetail(event)}>
                 <i class="fas fa-info-circle"></i>
                 &nbsp;Details</Button>
             </div>
             <div className='ms-2'>
               <Button variant="warning" onClick={(event) => hanldleUpdate(event)}>
-              <i class="fas fa-edit"></i>&nbsp;Edit</Button>
+                <i class="fas fa-edit"></i>&nbsp;Edit</Button>
             </div>
             <div className='ms-2'>
               <Button variant="danger" onClick={(event) => hanldleDelete(event)}>
-              <i class="fas fa-trash"></i>&nbsp;Remove</Button>
+                <i class="fas fa-trash"></i>&nbsp;Remove</Button>
             </div>
           </div>
         </Card.Body>
@@ -67,6 +73,16 @@ const Menu = ({ id, name, price, imgUrl, description,menuData,hanldleDelete }) =
           onHide={() => setShowModal(false)}
 
         />
+      )}
+      {showModalCheck && (
+        <ModalCheckRemove
+          show={showModalCheck}
+          onHide={() => setShowModalCheck(false)}
+          id={id}
+          name={name}
+          afterRemove={menuList}
+          data={data}
+        ></ModalCheckRemove>
       )}
     </div>
   );

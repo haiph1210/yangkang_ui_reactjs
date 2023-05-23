@@ -40,4 +40,7 @@ const updateMenu = (id, name, price, description, imgUrls) => {
     })
 }
 
-export { findAll, loadListImages, findForm, createMenu, updateMenu }
+const deleteMenu = (id) => {
+    return axios.delete(`menu/delete/${id}`);
+}
+export { findAll, loadListImages, findForm, createMenu, updateMenu, deleteMenu }
