@@ -25,15 +25,16 @@ const ModalMenu = ({ id, name, price, imgUrl, description, show, onHide }) => {
         size="lg"
         aria-labelledby="contained-modal-title-vcenter"
         centered
+       
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
             Thông Tin Menu
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          <div className='d-flex justify-content-around'>
-            <div className="d-flex flex-column">
+        <Modal.Body >
+          <div className='d-sm-flex justify-content-around'>
+            <div className="d-sm-flex flex-sm-column ">
               {Array.isArray(getImgUrl) && getImgUrl.map((imgUrl, index) => (
                 <img
                   key={index}
@@ -42,10 +43,11 @@ const ModalMenu = ({ id, name, price, imgUrl, description, show, onHide }) => {
                   width={"350px"} 
                   height={"200px"}
                   style={{ marginBottom: "10px" }}
+                  className='d-sm-flex '
                 />
               ))}
             </div>
-            <div className='d-flex flex-column'>
+            <div className='d-sm-flex flex-column'>
               <h4>{name}</h4>
               <p>Giá của sản phẩm: {price} vnđ</p>
               <p>Thông Tin Sản Phẩm: {description}</p>
@@ -54,8 +56,10 @@ const ModalMenu = ({ id, name, price, imgUrl, description, show, onHide }) => {
         </Modal.Body>
         <Modal.Footer>
           <Button className='btn btn-success' onClick={savingOrder}
-          >Thêm Vào Giỏ Hàng</Button>
-          <Button onClick={onHide}>Close</Button>
+          >
+            <i class="fas fa-cart-plus"></i>&nbsp;Thêm Vào Giỏ Hàng</Button>
+          <Button onClick={onHide}>
+          <i class="fas fa-times-circle"></i>&nbsp;Close</Button>
         </Modal.Footer>
       </Modal>
     </div>

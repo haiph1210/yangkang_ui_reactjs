@@ -5,61 +5,55 @@ import ModalMenu from '../modal/ModalMenuDetail';
 import { toast } from 'react-toastify';
 import ImageSlider from '../silder/ImgSlider';
 
-const Menu = ({ id, name, price, imgUrl, description }) => {
+const Menu = ({ id, name, price, imgUrl, description,menuData,hanldleDelete }) => {
   const [showModal, setShowModal] = useState(false);
   const [getImgUrl, setGetImgUrl] = useState("");
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isUpdate,setIsUpdate] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
       const base64Image = await imgUrl();
       setGetImgUrl(base64Image);
     };
-
     fetchData();
   }, [imgUrl]);
 
-
-  const hanlleMenuDetail = (event) => {
+  const hanldleUpdate = (event) => {
+    event.preventDefault();
+    setIsUpdate(true);
+    menuData({id,name,price,imgUrl,description,isUpdate: true})
+  }
+  
+  const hanldleMenuDetail = (event) => {
     event.preventDefault();
     setShowModal(true);
   }
 
-
-  // useEffect(() => {
-  //   let intervalId;
-
-  //   const fetchData = async () => {
-  //     const base64Images = await imgUrl();
-  //     setGetImgUrl(base64Images);
-  //     setCurrentImageIndex(0); // Set ảnh đầu tiên là ảnh hiển thị ban đầu
-  //   };
-
-  //   fetchData();
-
-  //   if (getImgUrl.length > 1) {
-  //     intervalId = setInterval(() => {
-  //       setCurrentImageIndex((prevIndex) => {
-  //         const nextIndex = prevIndex + 1;
-  //         return nextIndex >= getImgUrl.length ? 0 : nextIndex;
-  //       });
-  //     }, 1000);
-  //   }
-
-  //   return () => {
-  //     clearInterval(intervalId);
-  //   };
-  // }, [imgUrl]);
-
   return (
     <div>
-      <Card style={{ width: '18rem' }}>
+      <Card style={{ width: '20rem', height: '27rem' }} className='m-4 '>
         <ImageSlider imageUrls={getImgUrl} />
         <Card.Body>
           <Card.Title>{name}</Card.Title>
           <Card.Text>
             <p>Giá: Chỉ từ {price - 10} - {price + 10}</p>
           </Card.Text>
-          <Button variant="primary" onClick={(event) => hanlleMenuDetail(event)}>Chi Tiết Sản Phẩm</Button>
+          <div className='d-flex'>
+            <div className='ms-2'>
+              <Button 
+              variant="primary" 
+              onClick={(event) => hanldleMenuDetail(event)}>
+                <i class="fas fa-info-circle"></i>
+                &nbsp;Details</Button>
+            </div>
+            <div className='ms-2'>
+              <Button variant="warning" onClick={(event) => hanldleUpdate(event)}>
+              <i class="fas fa-edit"></i>&nbsp;Edit</Button>
+            </div>
+            <div className='ms-2'>
+              <Button variant="danger" onClick={(event) => hanldleDelete(event)}>
+              <i class="fas fa-trash"></i>&nbsp;Remove</Button>
+            </div>
+          </div>
         </Card.Body>
       </Card>
       {showModal && (

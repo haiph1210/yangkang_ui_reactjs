@@ -23,7 +23,7 @@ const ImageSlider = ({ imageUrls }) => {
             variant="top"
             src={`data:image/jpeg;base64,${imageUrls[currentImageIndex]}`}
             alt={`Image ${currentImageIndex + 1}`}
-            height="180px"
+            height="270px"
           />
     </div>
   );
