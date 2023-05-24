@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import '../filter/SearchMenu.scss'
 import { findForm } from '../service/MenuService';
 import { toast } from 'react-toastify';
-const FilterMenu = ({ listMenus, afterFilter }) => {
+const FilterMenu = ({ listMenus, afterFilter, refresh }) => {
     const [minPrice, setMinPrice] = useState("");
     const [maxPrice, setMaxPrice] = useState("");
 
@@ -22,6 +22,9 @@ const FilterMenu = ({ listMenus, afterFilter }) => {
     const handleRefresh = (e) => {
         e.preventDefault();
         afterFilter(listMenus);
+        setMinPrice("")
+        setMaxPrice("")
+        refresh()
     }
 
     const handleSearch = (e) => {

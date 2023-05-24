@@ -3,7 +3,7 @@ import { createMenu, updateMenu } from '../service/MenuService';
 import _, { debounce } from 'lodash';
 import { toast } from 'react-toastify';
 
-const ModalRequest = ({ afterAdd, menuData }) => {
+const ModalRequest = ({ afterAdd, menuData, resfresh, setRefresh }) => {
     const [id, setId] = useState(null);
     const [name, setName] = useState("");
     const [price, setPrice] = useState("");
@@ -18,6 +18,9 @@ const ModalRequest = ({ afterAdd, menuData }) => {
         const fileNames = values.map((file) => file.name);
         setFileName(fileNames);
     };
+    
+
+
 
     const handleSave = async (event) => {
         event.preventDefault();
@@ -59,6 +62,19 @@ const ModalRequest = ({ afterAdd, menuData }) => {
             setFileImage(menuData.imgUrl);
         }
     }, [menuData]);
+
+    useEffect(() => {
+        console.log(resfresh);
+        if (resfresh ===true) {
+            setId("");
+            setName("");
+            setPrice("");
+            setDescription("");
+            setFileImage("");
+            setRefresh();
+        }else{
+        }
+    }, [resfresh]);
 
     return (
         <div className='border mt-2'>

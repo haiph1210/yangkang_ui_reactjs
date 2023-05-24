@@ -1,6 +1,6 @@
 import axios from "../../../../../enviroments/enviroment-dev"
-const findAll = () => {
-    return axios.get(`menu/findPage`);
+const findAll = (page) => {
+    return axios.get(`menu/findPage?page=${page}`);
 }
 const loadListImages = (id) => {
     return axios.get(`menu/fileName/${id}`)
