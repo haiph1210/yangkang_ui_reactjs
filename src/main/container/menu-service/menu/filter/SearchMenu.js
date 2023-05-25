@@ -47,7 +47,7 @@ const FilterMenu = ({ listMenus, afterFilter, refresh }) => {
 
     return (
         <div>
-            <form className='mt-3 border form-search'>
+            <form className='border form-search'>
                 <div className='d-sm-flex justify-content-end  '>
                     <div className="mb-3 me-4">
                         <label className="form-label">Nhập Tên:</label>

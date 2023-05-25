@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import ModalMenu from '../modal/ModalMenuDetail';
-import { toast } from 'react-toastify';
 import ImageSlider from '../silder/ImgSlider';
 import ModalCheckRemove from '../modal/ModalCheckRemove';
-
+import '../entity/Menu.scss'
 const Menu = ({ id, name, price, imgUrl, description, menuData,menuList,data }) => {
   const [showModal, setShowModal] = useState(false);
   const [showModalCheck, setShowModalCheck] = useState(false);
@@ -35,8 +34,9 @@ const Menu = ({ id, name, price, imgUrl, description, menuData,menuList,data }) 
   }
 
   return (
-    <div>
-      <Card style={{ width: '20rem', height: '27rem' }} className='m-4 '>
+ 
+    <div className='d-flex justify-content-center'>
+      <Card style={{ width: '20rem', height: '27rem' }} className='d-flex'>
         <ImageSlider imageUrls={getImgUrl} />
         <Card.Body>
           <Card.Title>{name}</Card.Title>
@@ -44,7 +44,7 @@ const Menu = ({ id, name, price, imgUrl, description, menuData,menuList,data }) 
             <p>Giá: Chỉ từ {price - 10} - {price + 10}</p>
           </Card.Text>
           <div className='d-flex'>
-            <div className='ms-2'>
+            <div className=''>
               <Button
                 variant="primary"
                 onClick={(event) => hanldleMenuDetail(event)}>
