@@ -98,6 +98,19 @@ const Slider = () => {
                                 </NavDropdown.Item>
                             </NavDropdown>
                         </Nav>
+
+                        <Nav>
+                            <NavDropdown title={<span> <i class="fa-solid fa-hotel"></i> User-Manager</span>} id="basic-nav-dropdown">
+                                <NavDropdown.Item className='fix-lenght'>
+                                    <NavLink
+                                        to={"/user"}
+                                        className={"nav-link"} >
+                                        <i class="fa-solid fa-house-chimney"></i>
+                                        &nbsp;
+                                        User</NavLink>
+                                </NavDropdown.Item>
+                            </NavDropdown>
+                        </Nav>
                     </div>
                 )}
                 <div className={`${showSlider === true ? 'main' : 'centered'}`}>
