@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import Nav from 'react-bootstrap/Nav';
-import { findByUserCode } from '../../service/UserService';
+import { findByUserCode, updateAvartar } from '../../service/UserService';
 import { useParams } from 'react-router-dom';
 import Table from 'react-bootstrap/Table';
+import { update } from 'lodash';
+import ModalUpdateAvartar from './ModalUpdateAvartar/ModalUpdateAvartar';
 
 const UserInfo = () => {
     var FIND_URL = 'http://localhost:8001/api/user/file?fileName='
     const [userRes, setUserRes] = useState([]);
+    const [imgUpdate, setimgUpdate] = useState('');
+    const [showModal,setShowModal]  = useState(false);
     const [activeTab, setActiveTab] = useState('intro');
     const [activeTabChildren, setActiveTabChildren] = useState('overview');
     const userCode = useParams();
@@ -25,6 +29,15 @@ const UserInfo = () => {
     const handleTabChangeChildren = (eventKey) => {
         setActiveTabChildren(eventKey);
     }
+    const handleDetail = () => {
+        setShowModal(true);
+        const showFile = document.getElementById("updateAvartar");
+       
+    }
+
+    const hanldShowFile = () => {
+        document.getElementById("updateAvartar").click();
+    }
 
     useEffect(() => {
         getByUserCode()
@@ -32,15 +45,25 @@ const UserInfo = () => {
     return (
         <div>
             <div class="d-flex bd-highlight border-bottom">
-                <div class="p-2 flex-shrink-1 bd-highlight">
-                    <img
+                <div class="p-2 flex-shrink-1 bd-highlight handleUpdateAvartar ">
+                <div className='flex-row'> 
+                <img
                         src={FIND_URL + userRes.imgUrl}
-                        width={"80px"}
-                        height={"80px"}
-                        className='rounded-circle'
+                        width={"140px"}
+                        height={"100px"}
+                        className="rounded-circle"
                         alt={userRes.fullName}
                     />
+                    <input id="updateAvartar" type="file" hidden onChange={(event) => setimgUpdate(event.target.files[0])} />
+                    <label htmlFor="updateAvartar" className='btn border file-update' hidden>Update Avatar</label>
+                    <div>
+                    <button className='btn btn-success' onClick={handleDetail}><i class="fa-solid fa-circle-info"></i>&nbsp;Image Detail</button>
+
+                    </div>
                 </div>
+                  
+                </div>
+                
                 <div class="p-2 w-100 bd-highlight">{userRes.fullName}</div>
 
             </div>
@@ -54,6 +77,7 @@ const UserInfo = () => {
                     </Nav.Item>
                 </Nav>
             </div>
+           
             {activeTab === 'intro' && (
                 <div className='d-sm-flex '>
                     <div className='p-2 flex-shrink-1 bd-highlight border'>
@@ -73,8 +97,8 @@ const UserInfo = () => {
                     {activeTabChildren === 'overview' && (
                         <div className='border p-2 w-100 bd-highlight'>
                             Oke
-                            </div>
-                    )   }
+                        </div>
+                    )}
                 </div>
             )}
             {activeTab === 'image' && (
@@ -82,6 +106,20 @@ const UserInfo = () => {
                     Bánh
                 </div>
             )}
+
+            {showModal === true && (
+                <ModalUpdateAvartar
+                show={showModal}
+                onHide={() => setShowModal(false)}
+                imgUpdate={imgUpdate}
+                username={userRes.username}
+                imgNow={FIND_URL + userRes.imgUrl}
+                showFile = {hanldShowFile}
+                loadData={getByUserCode}
+                />
+
+            )}
+           
         </div>
     )
 }

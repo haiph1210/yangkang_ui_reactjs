@@ -54,18 +54,25 @@ const ModalRequest = ({ afterAdd, menuData, resfresh, setRefresh }) => {
         }
     }
     useEffect(() => {
+        const id = document.getElementById('id');
+        console.log(id);
         if (menuData && menuData.isUpdate === true) {
+            id.style.display = 'block';
             setId(menuData.id);
             setName(menuData.name);
             setPrice(menuData.price);
             setDescription(menuData.description);
             setFileImage(menuData.imgUrl);
+        }else{
+            id.style.display = 'none';
         }
     }, [menuData]);
 
     useEffect(() => {
+        const id = document.getElementById('id');
         console.log(resfresh);
         if (resfresh ===true) {
+            id.style.display = 'none';
             setId("");
             setName("");
             setPrice("");
@@ -81,7 +88,7 @@ const ModalRequest = ({ afterAdd, menuData, resfresh, setRefresh }) => {
 
             <form className=' mt-2 d-flex flex-column'>
                 <div className="mb-3 me-4 d-flex justify-content-center ">
-                    <div>
+                    <div id='id'>
                         <label className="form-label">
                             Id:</label>
                         <input

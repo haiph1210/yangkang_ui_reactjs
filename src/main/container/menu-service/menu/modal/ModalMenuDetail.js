@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react'
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { toast } from 'react-toastify';
+import Votting from './Votting';
 
-const ModalMenu = ({ id, name, price, imgUrl, description, show, onHide }) => {
+const ModalMenu = ({ id, name, price, imgUrl, description,totalStarInTotalUser, show, onHide ,loadData}) => {
   const [getImgUrl, setGetImgUrl] = useState("");
+  const [votting,setVotting] =useState(false);
   const savingOrder = () => {
     onHide();
     toast.success(`Đã thêm món ${name} vào giỏ hàng`);
@@ -18,7 +20,10 @@ const ModalMenu = ({ id, name, price, imgUrl, description, show, onHide }) => {
     fetchData();
   }, [imgUrl]);
 
-  console.log("handle", getImgUrl);
+  const handleVotting = () => {
+    setVotting(true);
+  }
+
   return (
     <div>
       <Modal show={show}
@@ -51,10 +56,14 @@ const ModalMenu = ({ id, name, price, imgUrl, description, show, onHide }) => {
               <h4>{name}</h4>
               <p>Giá của sản phẩm: {price} vnđ</p>
               <p>Thông Tin Sản Phẩm: {description}</p>
+              <p>Số lượt vote: {totalStarInTotalUser}</p>
             </div>
           </div>
         </Modal.Body>
         <Modal.Footer>
+        <Button className='btn btn-success' onClick={handleVotting}
+          >
+            <i class="fa-solid fa-comment"></i>&nbsp;Vote</Button>
           <Button className='btn btn-success' onClick={savingOrder}
           >
             <i class="fas fa-cart-plus"></i>&nbsp;Thêm Vào Giỏ Hàng</Button>
@@ -62,6 +71,16 @@ const ModalMenu = ({ id, name, price, imgUrl, description, show, onHide }) => {
           <i class="fas fa-times-circle"></i>&nbsp;Close</Button>
         </Modal.Footer>
       </Modal>
+      {votting && (
+        <Votting
+        show={votting}
+        onHide={() => setVotting(false)}
+        name={name}
+        id = {id}
+        totalStarInTotalUser= {totalStarInTotalUser}
+        loadData = {loadData}
+        ></Votting>
+      )}
     </div>
   )
 }

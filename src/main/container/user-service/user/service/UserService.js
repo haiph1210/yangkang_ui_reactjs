@@ -11,4 +11,15 @@ const findByUserCode = (userCode) => {
     return axios.get(URL+`userCode/${userCode}`)
 }
 
-export {findAllUser,findByUserCode}
+const updateAvartar = (username,imgUrl) => {
+    const formData = new FormData();
+    formData.append('username',username);
+    formData.append('imgUrl',imgUrl);
+    return axios.post(URL+`updateAvartar`,formData, {
+        headers: {
+            "Content-Type" : "form-data",
+        }
+    })
+}
+
+export {findAllUser,findByUserCode,updateAvartar}

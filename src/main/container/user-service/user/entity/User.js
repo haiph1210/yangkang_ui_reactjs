@@ -30,13 +30,12 @@ const User = ({ id, username, userCode, fullName, email, address, birthDay, gend
 
   return (
     <div className='d-sm-flex justify-content-center'>
-      <div ></div>
       <Card style={{ width: '20rem', height: '27rem' }}
         onClick={handleToGoDetail}
         onMouseEnter={handleOnMouseEnter}
         onMouseLeave={handleOnMouseLeave}
       >
-        <Card.Img variant="top"   alt={fullName} />
+        <Card.Img variant="top" src={imgUrl}  alt={fullName} />
         <Card.Body>
           <Card.Title>{userCode}</Card.Title>
           <Card.Text>

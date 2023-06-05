@@ -68,6 +68,7 @@ const FilterMenu = ({ listMenus, afterFilter, refresh }) => {
                             onChange={(event) => setMinPrice(event.target.value)}
                         />
                     </div>
+                    <div className='me-3 handle'><label className="form-label">--</label></div>
                     <div className="mb-3 me-4">
                         <label className="form-label">Đến Giá:</label>
                         <input

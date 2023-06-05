@@ -6,14 +6,14 @@ import AppRouter from '../../router/AppRouter';
 import Header from '../header/Header';
 import { NavDropdown } from 'react-bootstrap';
 import Footer from '../footer/Footer';
+import { useSelector } from 'react-redux';
+import { SelectAuth, SelectTokenResponse } from '../container/auth-service/redux/AuthSelector';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { faListDropdown } from '@fortawesome/free-solid-svg-icons';
 const Slider = () => {
     const [showSlider, setShowSlider] = useState("");
-
-
-
-
+    const isAuth = useSelector(SelectAuth);
+    const tokenResponse = useSelector(SelectTokenResponse);
     const handleOnClick = (value) => {
         console.log(value);
         setShowSlider(value);
@@ -98,19 +98,54 @@ const Slider = () => {
                                 </NavDropdown.Item>
                             </NavDropdown>
                         </Nav>
+                        {(tokenResponse && isAuth !== true && tokenResponse.user.role !== 'ADMIN')
+                            ?
+                            ''
+                            :
+                            <Nav>
+                                <NavDropdown title={<span> <i class="fa-solid fa-hotel"></i> User-Manager</span>} id="basic-nav-dropdown">
+                                    {(tokenResponse && isAuth !== true && tokenResponse.user.role !== 'ADMIN')
+                                        ?
+                                        <NavDropdown.Item className='fix-lenght'>
+                                            <NavLink
+                                                to={`/userInfo/${tokenResponse.user.userCode}`}
+                                                className={"nav-link"}
+                                            >
+                                                <i class="fa-solid fa-house-chimney"></i>
+                                                &nbsp;
 
-                        <Nav>
-                            <NavDropdown title={<span> <i class="fa-solid fa-hotel"></i> User-Manager</span>} id="basic-nav-dropdown">
-                                <NavDropdown.Item className='fix-lenght'>
-                                    <NavLink
-                                        to={"/user"}
-                                        className={"nav-link"} >
-                                        <i class="fa-solid fa-house-chimney"></i>
-                                        &nbsp;
-                                        User</NavLink>
-                                </NavDropdown.Item>
-                            </NavDropdown>
-                        </Nav>
+                                                UserInfo</NavLink>
+                                        </NavDropdown.Item>
+                                        :
+                                        (<>
+                                            <NavDropdown.Item className='fix-lenght'>
+                                                <NavLink
+                                                    to={"/user"}
+                                                    className={"nav-link"} >
+                                                    <i class="fa-solid fa-house-chimney"></i>
+                                                    &nbsp;
+                                                    User</NavLink>
+                                            </NavDropdown.Item>
+
+                                            <NavDropdown.Item className='fix-lenght'>
+                                                <NavLink
+                                                    to={`/userInfo/${tokenResponse.user.userCode}`}
+                                                    className={"nav-link"}
+                                                >
+                                                    <i class="fa-solid fa-house-chimney"></i>
+                                                    &nbsp;
+
+                                                    UserInfo</NavLink>
+                                            </NavDropdown.Item>
+                                        </>)
+
+                                    }
+
+
+
+                                </NavDropdown>
+                            </Nav>}
+
                     </div>
                 )}
                 <div className={`${showSlider === true ? 'main' : 'centered'}`}>

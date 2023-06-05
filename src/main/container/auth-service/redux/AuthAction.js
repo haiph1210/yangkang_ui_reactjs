@@ -1,6 +1,7 @@
 import { toast } from 'react-toastify';
 import { APILogin } from '../service/AuthService'
-export const LoginAction = (username, password) => {
+import { useNavigate } from 'react-router-dom';
+export const LoginAction = (username, password,navigateCallBack) => {
     return async (dispatch) => {
         dispatch({
             type: 'auth/login',
@@ -10,14 +11,18 @@ export const LoginAction = (username, password) => {
             console.log(res);
             if (res && res.responseData) {
                 const dataRes = res.responseData;
+                const userJson = JSON.stringify(dataRes.user);
+                localStorage.setItem('token',dataRes.token);
+                localStorage.setItem('user',userJson);
                 dispatch({
                     type: 'auth/login-success',
                     payload: dataRes,
                 })
                 toast.success("Login Success,Navigate To Home <3");
+                navigateCallBack();
             } else {
                 if (res && res.status === 500) {
-                    toast.error("Login false");
+                    toast.error(res.data.responseData);
                     dispatch({
                         type: 'auth/login-false',
                     })
@@ -29,18 +34,17 @@ export const LoginAction = (username, password) => {
     }
 }
 
+
 export const LogOutAction = () => {
-    return (dispatch) => {
-        dispatch({
-            type: 'auth/log-out'
-        })
+    return{
+        type: 'auth/log-out',
     }
 }
 
 export const RefreshAction = () => {
     return (dispatch) => {
         dispatch({
-            type: 'auth/resfresh'
+            type: 'auth/refresh',
         })
     }
 }

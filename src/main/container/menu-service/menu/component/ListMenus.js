@@ -5,6 +5,10 @@ import { findAll, loadListImages } from '../service/MenuService';
 import FilterMenu from '../filter/SearchMenu';
 import ModalRequest from '../modal/ModalRequest';
 import ReactPaginate from 'react-paginate';
+import { useSelector } from 'react-redux';
+import { SelectAuth, SelectTokenResponse } from '../../../auth-service/redux/AuthSelector';
+import {NumberFormat} from 'intl';
+import 'intl/locale-data/jsonp/en';
 const ListMenus = () => {
     // const URL_LOAD_IMAGE_TOBASE64 = "http://localhost:8000/api/menu/fileName/"
     const [menus, setMenus] = useState([]);
@@ -12,6 +16,25 @@ const ListMenus = () => {
     const [filteredMenus, setFilteredMenus] = useState([]);
     const [saveMenuToUpdate, setSaveMenuToUpdate] = useState(null);
     const [refresh, setRefresh] = useState(false);
+    const tokenRes = useSelector(SelectTokenResponse);
+    const isAuth = useSelector(SelectAuth);
+    const formatPrice = (price) => {
+        const formatter = new NumberFormat('vi-VN', {
+          style: 'currency',
+          currency: 'VND',
+        });
+        return formatter.format(price);
+      };
+      const formatPriceUSD = (priceVND) => {
+        const exchangeRate = 23000; // Tỷ giá hối đoái: 23.000 VND = 1 USD
+        const priceUSD = priceVND / exchangeRate;
+        const formatter = new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD',
+        });
+        return formatter.format(priceUSD);
+      };
+
     const getAllMenus = async (page) => {
         const res = await findAll(page);
         if (res && res.responseData && res.responseData.content) {
@@ -73,33 +96,38 @@ const ListMenus = () => {
                     afterFilter={handleFilter}
                     refresh={handleRefresh}
                 ></FilterMenu>
-                <ModalRequest
-                    afterAdd={handleAffterAdd}
-                    menuData={saveMenuToUpdate}
-                    resfresh={refresh}
-                    setRefresh={() => setRefresh(false)}
-                ></ModalRequest>
-                    <Row xs={1} md={3} className="g-sm-4 border mt-3 ms-0 me-0 hanlde-1236 ">
-                        {filteredMenus &&
-                            filteredMenus.length > 0 &&
-                            filteredMenus.map((item, index) => (
+                {(isAuth === true && tokenRes.user.role === "ADMIN") && (
+                    <ModalRequest
+                        afterAdd={handleAffterAdd}
+                        menuData={saveMenuToUpdate}
+                        resfresh={refresh}
+                        setRefresh={() => setRefresh(false)}
+                    ></ModalRequest>
+                )}
 
-                                <Col key={"Menu" + index} >
-                                    {item.id !== null ? (
-                                        <Menu
-                                            id={item.id}
-                                            name={item.name}
-                                            price={item.price}
-                                            imgUrl={() => getAllBase64Image(item.id)}
-                                            description={item.description}
-                                            menuData={hanldeSaveDataToUpdate}
-                                            menuList={menus.content}
-                                            data={handleAffterDelete}
-                                        />
-                                    ) : null}
-                                </Col>
-                            ))}
-                    </Row>
+                <Row xs={1} md={3} className="g-sm-4 border mt-3 ms-0 me-0 hanlde-1236 ">
+                    {filteredMenus &&
+                        filteredMenus.length > 0 &&
+                        filteredMenus.map((item, index) => (
+                            <Col key={"Menu" + index} >
+                                {item.id !== null ? (
+                                    <Menu
+                                        id={item.id}
+                                        name={item.name}
+                                        price={formatPrice(item.price)}
+                                        usd = {formatPriceUSD((item.price))}
+                                        imgUrl={() => getAllBase64Image(item.id)}
+                                        description={item.description}
+                                        totalStarInTotalUser = {item.totalStarInTotalUser}
+                                        menuData={hanldeSaveDataToUpdate}
+                                        menuList={menus.content}
+                                        data={handleAffterDelete}
+                                        loadData ={handleAffterAdd}
+                                    />
+                                ) : null}
+                            </Col>
+                        ))}
+                </Row>
             </Container>
             <ReactPaginate
                 className='d-flex justify-content-center mt-3 list-unstyled'

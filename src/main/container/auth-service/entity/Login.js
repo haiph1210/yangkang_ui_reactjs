@@ -3,7 +3,7 @@ import CustomeInput from '../../../input/CustomeInput'
 import { validateEmail, validatePassword, validatePhoneNumber, validateRequire } from '../../../input/ValidateConfig';
 import '../../../container/auth-service/entity/Login.scss'
 import { NavLink, useNavigate } from 'react-router-dom';
-import {APILogin} from '../../auth-service/service/AuthService'
+import { APILogin } from '../../auth-service/service/AuthService'
 import { useDispatch, useSelector } from 'react-redux';
 import { LoginAction } from '../redux/AuthAction';
 import { toast } from 'react-toastify';
@@ -16,7 +16,6 @@ const Login = () => {
   const dispatch = useDispatch();
 
   const resToken = useSelector(SelectTokenResponse);
-  console.log(resToken);
   const handleInputUsername = (value) => {
     setInputUsername(value);
   }
@@ -25,13 +24,18 @@ const Login = () => {
     setInputPassword(value);
   }
 
-  const handleLogin = async(event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
-    if(!inputUsername || !inputPassword) {
+    if (!inputUsername || !inputPassword) {
       toast.error("Username/Password is required!");
       return;
-  }
-    dispatch(LoginAction(inputUsername,inputPassword))
+    }
+
+    (dispatch(LoginAction(inputUsername, inputPassword, () => {
+      setTimeout(() => {
+        navigate("/home")
+      },1500)
+    })))
   }
 
   const hanldeBack = () => {

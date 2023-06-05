@@ -5,11 +5,14 @@ import ModalMenu from '../modal/ModalMenuDetail';
 import ImageSlider from '../silder/ImgSlider';
 import ModalCheckRemove from '../modal/ModalCheckRemove';
 import '../entity/Menu.scss'
-const Menu = ({ id, name, price, imgUrl, description, menuData,menuList,data }) => {
+import { useSelector } from 'react-redux';
+import { SelectAuth } from '../../../auth-service/redux/AuthSelector';
+const Menu = ({ id, name, price, usd, imgUrl, description , totalStarInTotalUser, menuData, menuList, data,loadData }) => {
   const [showModal, setShowModal] = useState(false);
   const [showModalCheck, setShowModalCheck] = useState(false);
   const [getImgUrl, setGetImgUrl] = useState("");
   const [isUpdate, setIsUpdate] = useState(false);
+  const isAuth = useSelector(SelectAuth);
   useEffect(() => {
     const fetchData = async () => {
       const base64Image = await imgUrl();
@@ -34,14 +37,14 @@ const Menu = ({ id, name, price, imgUrl, description, menuData,menuList,data }) 
   }
 
   return (
- 
+
     <div className='d-flex justify-content-center'>
       <Card style={{ width: '20rem', height: '27rem' }} className='d-flex'>
         <ImageSlider imageUrls={getImgUrl} />
         <Card.Body>
           <Card.Title>{name}</Card.Title>
           <Card.Text>
-            <p>Giá: Chỉ từ {price - 10} - {price + 10}</p>
+            <p>Giá: {price} Hoặc {usd}</p>
           </Card.Text>
           <div className='d-flex'>
             <div className=''>
@@ -51,14 +54,22 @@ const Menu = ({ id, name, price, imgUrl, description, menuData,menuList,data }) 
                 <i class="fas fa-info-circle"></i>
                 &nbsp;Details</Button>
             </div>
-            <div className='ms-2'>
-              <Button variant="warning" onClick={(event) => hanldleUpdate(event)}>
-                <i class="fas fa-edit"></i>&nbsp;Edit</Button>
-            </div>
-            <div className='ms-2'>
-              <Button variant="danger" onClick={(event) => hanldleDelete(event)}>
-                <i class="fas fa-trash"></i>&nbsp;Remove</Button>
-            </div>
+            {isAuth ? (
+              <>
+                <div className='ms-2'>
+                  <Button variant="warning" onClick={(event) => hanldleUpdate(event)}>
+                    <i class="fas fa-edit"></i>&nbsp;Edit
+                  </Button>
+                </div>
+                <div className='ms-2'>
+                  <Button variant="danger" onClick={(event) => hanldleDelete(event)}>
+                    <i class="fas fa-trash"></i>&nbsp;Remove
+                  </Button>
+                </div>
+              </>
+            ) : null}
+
+
           </div>
         </Card.Body>
       </Card>
@@ -69,8 +80,10 @@ const Menu = ({ id, name, price, imgUrl, description, menuData,menuList,data }) 
           price={price}
           imgUrl={imgUrl}
           description={description}
+          totalStarInTotalUser={totalStarInTotalUser}
           show={showModal}
           onHide={() => setShowModal(false)}
+          loadData = {loadData}
 
         />
       )}

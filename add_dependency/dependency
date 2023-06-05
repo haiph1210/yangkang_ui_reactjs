@@ -9,4 +9,6 @@ npm install --save-exact react-error-overlay@6.0.9 --force
 npm install --save-exact redux@4.2.0 react-redux@8.0.1 --force  
 npm install --save-exact redux-thunk@2.4.1 --force  
 npm install --save redux-devtools-extension@2.13.9 --force  
- npm install date-fns --force  
+npm install date-fns --force  
+npm install intl --force // format price
+npm install react-star-rating-component --force

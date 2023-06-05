@@ -11,6 +11,7 @@ import { BrowserRouter } from 'react-router-dom';
 import Stores from './redux/Stores';
 import { Provider } from 'react-redux';
 ReactDOM.render(
+  
   <React.StrictMode>
     <BrowserRouter>
     <Provider store={Stores}>

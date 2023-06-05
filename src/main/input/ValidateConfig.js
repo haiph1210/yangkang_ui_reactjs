@@ -30,19 +30,33 @@ export function validatePhoneNumber(value) {
     return '';
 }
 
-export function validatePassword (value) {
+export function validatePassword(value) {
     var lowerCaseLetters = /[a-z]/g;
     var upperCaseLetters = /[A-Z]/g;
     var numbers = /[0-9]/g;
-    if(!value.match(lowerCaseLetters)){
+    if (!value.match(lowerCaseLetters)) {
         return 'Password must contain at least 1 lowercase character';
     }
-    if(!value.match(upperCaseLetters)){
+    if (!value.match(upperCaseLetters)) {
         return 'Password must contain at least 1 uppercase character';
     }
-    if(!value.match(numbers)){
+    if (!value.match(numbers)) {
         return 'Password must number';
-    }if(value.length < 8) {
+    } if (value.length < 8) {
         return 'Password must length > 8 character';
     }
+}
+
+export function validateDate(value) {
+    var today = new Date();
+    var tomorrow = new Date(today); // lấy ra ngày hiện tại + 1 
+    var input = new Date(value) // lấy ra ngày nhập vào
+    tomorrow.setDate(tomorrow.getDate() + 1); //lấy ra ngày hiện tại + 1
+    console.log(input);
+    console.log(tomorrow); 
+    if (input >= tomorrow) {
+        return 'Input False,Input larger today';
+    }
+    return '';
+
 }

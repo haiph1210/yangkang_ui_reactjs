@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const initState = {
     tokenResponse: {
         token: '',
@@ -46,9 +48,11 @@ const AuthReducer = (state = initState, action) => {
                 isErrorr: true
             }
         case 'auth/log-out':
+            localStorage.removeItem('token')
+            localStorage.removeItem('user');
             return {
                 ...state,
-                auth: false,
+                auth: null,
                 tokenResponse: {
                     token: '',
                     user: {
@@ -67,8 +71,15 @@ const AuthReducer = (state = initState, action) => {
                 isLoading: false,
                 isErrorr: false
             }
-        // case 'auth/refresh':
-        //     return
+        case 'auth/refresh':
+            return {
+                ...state,
+                auth: true,
+                tokenResponse: {
+                    token: localStorage.getItem('token'),
+                    user: JSON.parse(localStorage.getItem('user'))
+                }
+            }
         default:
             return state;
     }
