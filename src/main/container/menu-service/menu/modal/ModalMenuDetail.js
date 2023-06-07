@@ -3,13 +3,27 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { toast } from 'react-toastify';
 import Votting from './Votting';
+import { createCart } from '../../cart/service/CartService';
+import { set } from 'lodash';
+import AddToCart from './AddToCart';
 
-const ModalMenu = ({ id, name, price, imgUrl, description,totalStarInTotalUser, show, onHide ,loadData}) => {
+const ModalMenu = ({ id, name,code, price, imgUrl, description,totalStarInTotalUser, show, onHide ,loadData}) => {
   const [getImgUrl, setGetImgUrl] = useState("");
   const [votting,setVotting] =useState(false);
-  const savingOrder = () => {
-    onHide();
-    toast.success(`Đã thêm món ${name} vào giỏ hàng`);
+  const [addToCart,setAddToCart] = useState(false);
+  const [showModal, setShowModal] = useState(show);
+  const addCart = async () => {
+    const res = await createCart();
+  }
+  const hideModal = () => {
+    setShowModal(!show);
+  }
+  const comeBackShow = () => {
+    setShowModal(show);
+  }
+  const savingAddCart = () => {
+    setAddToCart(true);
+    hideModal();
   }
   useEffect(() => {
     const fetchData = async () => {
@@ -26,7 +40,7 @@ const ModalMenu = ({ id, name, price, imgUrl, description,totalStarInTotalUser, 
 
   return (
     <div>
-      <Modal show={show}
+      <Modal show={showModal}
         size="lg"
         aria-labelledby="contained-modal-title-vcenter"
         centered
@@ -64,7 +78,7 @@ const ModalMenu = ({ id, name, price, imgUrl, description,totalStarInTotalUser, 
         <Button className='btn btn-success' onClick={handleVotting}
           >
             <i class="fa-solid fa-comment"></i>&nbsp;Vote</Button>
-          <Button className='btn btn-success' onClick={savingOrder}
+          <Button className='btn btn-success' onClick={savingAddCart}
           >
             <i class="fas fa-cart-plus"></i>&nbsp;Thêm Vào Giỏ Hàng</Button>
           <Button onClick={onHide}>
@@ -80,6 +94,15 @@ const ModalMenu = ({ id, name, price, imgUrl, description,totalStarInTotalUser, 
         totalStarInTotalUser= {totalStarInTotalUser}
         loadData = {loadData}
         ></Votting>
+      )}
+      {addToCart && (
+        <AddToCart
+        code={code}
+        show={addToCart}
+        onHide={() => setAddToCart(false)}
+        name={name}
+        isSuccess={comeBackShow}
+        />
       )}
     </div>
   )

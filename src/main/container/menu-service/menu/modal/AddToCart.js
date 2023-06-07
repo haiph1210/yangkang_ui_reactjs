@@ -2,11 +2,47 @@ import React, { useState } from 'react'
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { toast } from 'react-toastify';
+import { createCart, updateCart } from '../../cart/service/CartService';
 
-const AddToCart = ({ id, name, price, imgUrl, description, show, onHide}) => {
+const AddToCart = ({ code,id, show, onHide, name, isSuccess,isUpdate ,loadData}) => {
+  const [amount, setAmount] = useState(0);
+  const handlePlus = () => {
+    setAmount(amount+1);
+  }
+  const addCart = async () => {
+    try {
+      if(isUpdate ===true) {
+        const res = await updateCart(id,code, amount);
+        console.log(res);
+        if (res && res.data.responseData) {
+          onHide();
+          toast.success(`Add ${name} to cart success`);
+          loadData()
+        }
+      }else{
+        const res = await createCart(code, amount);
+        console.log(res);
+        if (res && res.data.responseData) {
+          onHide();
+          toast.success(`Add ${name} to cart success`);
+          isSuccess()
+        } else {
+          toast.error(`${name} add to cart failed`);
+        }
+      }
+     
+    } catch (error) {
+      toast.error('An error occurred while adding to cart. Please try again later.');
+    }
+  };
+  
+
+  const handleMinus = () => {
+    setAmount(amount-1);
+  }
   const savingOrder = () => {
-    onHide();
-    toast.success(`Đã thêm món ${name} vào giỏ hàng`);
+    addCart();
+   
   }
   return (
     <div>
@@ -17,11 +53,17 @@ const AddToCart = ({ id, name, price, imgUrl, description, show, onHide}) => {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            Thêm Vào Giỏ Hàng
+            Amount {name} you want add to cart
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          
+        <label>Amount:</label>
+          <div className='d-flex justify-content'>
+              <button onClick={handlePlus}><i class="fa-solid fa-plus"></i></button>
+            {amount}
+            <button onClick={handleMinus}><i class="fa-solid fa-minus"></i></button>
+            
+          </div>
         </Modal.Body>
         <Modal.Footer>
           <Button className='btn btn-success' onClick={savingOrder}

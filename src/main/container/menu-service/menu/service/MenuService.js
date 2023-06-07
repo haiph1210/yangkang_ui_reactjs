@@ -43,4 +43,14 @@ const updateMenu = (id, name, price, description, imgUrls) => {
 const deleteMenu = (id) => {
     return axios.delete(`menu/delete/${id}`);
 }
-export { findAll, loadListImages, findForm, createMenu, updateMenu, deleteMenu }
+
+const getAllBase64Image = async (id) => {
+    const res = await loadListImages(id);
+    if (res) {
+        const bodies = res.map((item) => item.body);
+        return bodies;
+    } else {
+        return "1";
+    }
+};
+export { findAll, loadListImages, findForm, createMenu, updateMenu, deleteMenu ,getAllBase64Image}

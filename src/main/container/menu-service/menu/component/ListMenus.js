@@ -114,6 +114,7 @@ const ListMenus = () => {
                                     <Menu
                                         id={item.id}
                                         name={item.name}
+                                        code= {item.code}
                                         price={formatPrice(item.price)}
                                         usd = {formatPriceUSD((item.price))}
                                         imgUrl={() => getAllBase64Image(item.id)}

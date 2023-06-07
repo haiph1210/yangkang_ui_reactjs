@@ -12,8 +12,22 @@ import { SelectAuth, SelectTokenResponse } from '../container/auth-service/redux
 import { LogOutAction } from '../container/auth-service/redux/AuthAction';
 import { toast } from 'react-toastify';
 import { useEffect } from 'react';
+import { total } from '../container/menu-service/cart/service/CartService';
 
 const Header = ({ onClickHideOrShow }) => {
+  const [totalCarts,setTotalCarts] = useState(0);
+  const fetchTotalCart = async () => {
+    try {
+      const totalCart = await total();
+      if (totalCart && totalCart.data.responseData) {
+        setTotalCarts(totalCart.data.responseData);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  fetchTotalCart();
   const tokenResponse = useSelector(SelectTokenResponse);
   const isAuth = useSelector(SelectAuth);
   const navigate = useNavigate();
@@ -83,6 +97,19 @@ const Header = ({ onClickHideOrShow }) => {
               <NavLink to={"/combo"} className={"nav-link"}>Combo</NavLink>
               <NavLink to={"/order"} className={"nav-link"}>Order</NavLink>
             </Nav>
+            {isAuth
+              ? <Nav>
+                <NavLink to={"/cart"} className={"nav-link"}><div>
+                  <div className='icon-cart'><i class="fa-solid fa-cart-shopping"></i>
+                  <div className='total-cart'>{totalCarts}</div>
+                  </div>
+                  
+                  </div></NavLink>
+                </Nav>
+              :
+              null
+            }
+
             <Nav>
               <NavDropdown title={isAuth && tokenResponse ? tokenResponse.user.fullName : "Setting"} id="basic-nav-dropdown">
                 {isAuth === null ? (

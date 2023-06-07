@@ -7,7 +7,7 @@ import ModalCheckRemove from '../modal/ModalCheckRemove';
 import '../entity/Menu.scss'
 import { useSelector } from 'react-redux';
 import { SelectAuth } from '../../../auth-service/redux/AuthSelector';
-const Menu = ({ id, name, price, usd, imgUrl, description , totalStarInTotalUser, menuData, menuList, data,loadData }) => {
+const Menu = ({ id, name, code, price, usd, imgUrl, description , totalStarInTotalUser, menuData, menuList, data,loadData }) => {
   const [showModal, setShowModal] = useState(false);
   const [showModalCheck, setShowModalCheck] = useState(false);
   const [getImgUrl, setGetImgUrl] = useState("");
@@ -42,8 +42,13 @@ const Menu = ({ id, name, price, usd, imgUrl, description , totalStarInTotalUser
       <Card style={{ width: '20rem', height: '27rem' }} className='d-flex'>
         <ImageSlider imageUrls={getImgUrl} />
         <Card.Body>
-          <Card.Title>{name}</Card.Title>
+          <Card.Title>
+            <div className='d-flex'><div>{name}</div>
+          </div>
+            
+          </Card.Title>
           <Card.Text>
+          <div className=''>Mã Code:{code}</div>
             <p>Giá: {price} Hoặc {usd}</p>
           </Card.Text>
           <div className='d-flex'>
@@ -77,6 +82,7 @@ const Menu = ({ id, name, price, usd, imgUrl, description , totalStarInTotalUser
         <ModalMenu
           id={id}
           name={name}
+          code={code}
           price={price}
           imgUrl={imgUrl}
           description={description}
