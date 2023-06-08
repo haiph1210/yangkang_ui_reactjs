@@ -10,6 +10,7 @@ import { SelectTokenResponse } from '../../../auth-service/redux/AuthSelector'
 import '../component/ListCart.scss'
 const ListCart = () => {
     const [listCart, setListCart] = useState([]);
+    const [listId,setListId] = useState([]);
     const tokenRespone = useSelector(SelectTokenResponse);
     const getAllCart = async (page) => {
         try {
@@ -30,9 +31,31 @@ const ListCart = () => {
         getAllCart(1);
     }, [])
 
+    const handleOrder = () => {
+        console.log(listId);
+    }
+
+    const handleSendData = (data) => {
+        if (data && data.length > 0) {
+            console.log(data);
+          setListId((prevListId) => [...prevListId, ...data]);
+        }  if (data && data.length === 0) {
+            console.log(data);
+          setListId((prevListId) => [...prevListId, []]);
+        }
+      };
+      
+
     return (
         <div>
             <div className='config-title'>Cart User <i>{tokenRespone.user.fullName}</i> </div>
+            <div className='d-flex justify-content-end'>
+                <button 
+                className='btn btn-success mb-2 me-4'
+                onClick={handleOrder}
+                >
+                    <i class="fa-solid fa-list"></i>&nbsp;Order</button>
+            </div>
             <Table striped bordered hover>
                 <thead>
                     <tr>
@@ -63,6 +86,7 @@ const ListCart = () => {
                                 initPrice={item.initPrice}
                                 createDate={item.createDate}
                                 loadData={loadData}
+                                sendData={handleSendData}
                             />
                         );
                     })}
