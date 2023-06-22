@@ -19,7 +19,6 @@ const initState = {
     auth: null,
     isLoading: false,
     isErrorr: false
-
 }
 
 const AuthReducer = (state = initState, action) => {

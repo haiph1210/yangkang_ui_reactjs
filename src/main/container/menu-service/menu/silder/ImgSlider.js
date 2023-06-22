@@ -5,6 +5,9 @@ const ImageSlider = ({ imageUrls }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
+    if (imageUrls === null) {
+      return; 
+    }
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => {
         const nextIndex = prevIndex + 1;

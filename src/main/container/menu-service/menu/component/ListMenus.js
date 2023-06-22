@@ -7,7 +7,7 @@ import ModalRequest from '../modal/ModalRequest';
 import ReactPaginate from 'react-paginate';
 import { useSelector } from 'react-redux';
 import { SelectAuth, SelectTokenResponse } from '../../../auth-service/redux/AuthSelector';
-import {NumberFormat} from 'intl';
+import { NumberFormat } from 'intl';
 import 'intl/locale-data/jsonp/en';
 const ListMenus = () => {
     // const URL_LOAD_IMAGE_TOBASE64 = "http://localhost:8000/api/menu/fileName/"
@@ -20,20 +20,20 @@ const ListMenus = () => {
     const isAuth = useSelector(SelectAuth);
     const formatPrice = (price) => {
         const formatter = new NumberFormat('vi-VN', {
-          style: 'currency',
-          currency: 'VND',
+            style: 'currency',
+            currency: 'VND',
         });
         return formatter.format(price);
-      };
-      const formatPriceUSD = (priceVND) => {
+    };
+    const formatPriceUSD = (priceVND) => {
         const exchangeRate = 23000; // Tỷ giá hối đoái: 23.000 VND = 1 USD
         const priceUSD = priceVND / exchangeRate;
         const formatter = new Intl.NumberFormat('en-US', {
-          style: 'currency',
-          currency: 'USD',
+            style: 'currency',
+            currency: 'USD',
         });
         return formatter.format(priceUSD);
-      };
+    };
 
     const getAllMenus = async (page) => {
         const res = await findAll(page);
@@ -51,13 +51,13 @@ const ListMenus = () => {
 
     const getAllBase64Image = async (id) => {
         const res = await loadListImages(id);
-        if (res) {
+        console.log(res);
+        if(res) {
             const bodies = res.map((item) => item.body);
             return bodies;
-        } else {
-            return "1";
         }
-    };
+        }
+
 
 
     const handleFilter = (filter) => {
@@ -80,6 +80,10 @@ const ListMenus = () => {
 
     const handleRefresh = () => {
         setRefresh(true);
+    }
+
+    const handleDelete = (value) => {
+        console.log(value);
     }
 
     useEffect(() => {
@@ -114,16 +118,17 @@ const ListMenus = () => {
                                     <Menu
                                         id={item.id}
                                         name={item.name}
-                                        code= {item.code}
+                                        code={item.code}
                                         price={formatPrice(item.price)}
-                                        usd = {formatPriceUSD((item.price))}
+                                        usd={formatPriceUSD((item.price))}
                                         imgUrl={() => getAllBase64Image(item.id)}
                                         description={item.description}
-                                        totalStarInTotalUser = {item.totalStarInTotalUser}
+                                        totalStarInTotalUser={item.totalStarInTotalUser}
                                         menuData={hanldeSaveDataToUpdate}
-                                        menuList={menus.content}
+                                        menuList={filteredMenus}
                                         data={handleAffterDelete}
-                                        loadData ={handleAffterAdd}
+                                        loadData={handleAffterAdd}
+                                        isDelete={handleDelete}
                                     />
                                 ) : null}
                             </Col>

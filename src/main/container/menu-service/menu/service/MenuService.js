@@ -2,6 +2,10 @@ import axios from "../../../../../enviroments/enviroment-dev"
 const findAll = (page) => {
     return axios.get(`menu/findPage?page=${page}`);
 }
+
+const findAllListMenu = () => {
+    return axios.get(`menu/findAll`);
+}
 const loadListImages = (id) => {
     return axios.get(`menu/fileName/${id}`)
 }
@@ -53,4 +57,4 @@ const getAllBase64Image = async (id) => {
         return "1";
     }
 };
-export { findAll, loadListImages, findForm, createMenu, updateMenu, deleteMenu ,getAllBase64Image}
+export { findAll,findAllListMenu, loadListImages, findForm, createMenu, updateMenu, deleteMenu ,getAllBase64Image}

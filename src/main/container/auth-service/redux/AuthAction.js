@@ -8,7 +8,6 @@ export const LoginAction = (username, password,navigateCallBack) => {
         });
         try {
             const res = await APILogin(username, password);
-            console.log(res);
             if (res && res.responseData) {
                 const dataRes = res.responseData;
                 const userJson = JSON.stringify(dataRes.user);

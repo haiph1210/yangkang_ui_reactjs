@@ -6,6 +6,7 @@ import Login from './main/container/auth-service/entity/Login';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { RefreshAction } from './main/container/auth-service/redux/AuthAction';
+import CustomCheckbox from './main/input/CustomCheckbox';
 // import cors from "cors";
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
     <div>
       <div>
         <Slider></Slider>
+
       </div>
 
 

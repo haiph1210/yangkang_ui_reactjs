@@ -2,33 +2,36 @@ import React from 'react'
 import { Table } from 'react-bootstrap'
 import Cart from '../entity/Cart'
 import { useState } from 'react'
-import { findAllCart } from '../service/CartService'
+import { findAllCart, findByUserCode, findByUserCodeV2 } from '../service/CartService'
 import { useEffect } from 'react'
 import { findAll, getAllBase64Image } from '../../menu/service/MenuService'
 import { useSelector } from 'react-redux'
 import { SelectTokenResponse } from '../../../auth-service/redux/AuthSelector'
 import '../component/ListCart.scss'
+import { find } from 'lodash'
 const ListCart = () => {
     const [listCart, setListCart] = useState([]);
     const [listId,setListId] = useState([]);
     const tokenRespone = useSelector(SelectTokenResponse);
-    const getAllCart = async (page) => {
-        try {
-            const res = await findAllCart(page);
-            console.log(res);
-            if (res && res.data.responseData)
-                setListCart(res.data.responseData.content);
-        } catch (error) {
+
+    const getAllCartByUserCode = async () => {
+        try{
+            const userCode = tokenRespone.user.userCode;
+            const res = await findByUserCodeV2(userCode);
+            if(res && res.data.responseData) {
+                setListCart(res.data.responseData[userCode]);
+            }
+        }catch(error){
             console.log(error);
         }
-    };
+    }
 
     const loadData = () => {
-        getAllCart();
+        getAllCartByUserCode();
     }
 
     useEffect(() => {
-        getAllCart(1);
+        getAllCartByUserCode()
     }, [])
 
     const handleOrder = () => {
@@ -37,10 +40,8 @@ const ListCart = () => {
 
     const handleSendData = (data) => {
         if (data && data.length > 0) {
-            console.log(data);
           setListId((prevListId) => [...prevListId, ...data]);
         }  if (data && data.length === 0) {
-            console.log(data);
           setListId((prevListId) => [...prevListId, []]);
         }
       };
@@ -72,7 +73,7 @@ const ListCart = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {listCart.map((item, index) => {
+                    {listCart && listCart.map((item, index) => {
                         return (
                             <Cart
                                 key={index}

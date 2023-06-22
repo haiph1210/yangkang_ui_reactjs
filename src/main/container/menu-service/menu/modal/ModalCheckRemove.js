@@ -5,13 +5,14 @@ import { toast } from 'react-toastify';
 import { deleteMenu } from '../service/MenuService';
 import _, { debounce } from 'lodash';
 
-const ModalCheckRemove = ({show,onHide,id,name,afterRemove,data}) => {
+const ModalCheckRemove = ({show,onHide,id,name,afterRemove,data,isDelete}) => {
     const handleDelete = async(event) => {
         event.preventDefault();
         const res = await deleteMenu(id);
         if(res && res.responseData!== null) {
             onHide();
             loadDataAfterDelete();
+            isDelete(true);
             toast.success(`Delete with id: ${id} and menu name: ${name} successfully`);
         }else{
             toast.success(`Delete with id: ${id} and menu name: ${name} false`);
@@ -20,7 +21,9 @@ const ModalCheckRemove = ({show,onHide,id,name,afterRemove,data}) => {
 
     const loadDataAfterDelete = debounce(() => {
         const cloneMenu = _.clone(afterRemove);
+        console.log(cloneMenu);
         const loadData = cloneMenu.filter(item => item.id !== id);
+        console.log(loadData);
         data(loadData)
       })
   return (

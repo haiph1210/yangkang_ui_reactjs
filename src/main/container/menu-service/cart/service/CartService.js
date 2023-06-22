@@ -4,15 +4,24 @@ const URL = "http://localhost:8000/api/cart/"
 const findAllCart = (page) => {
     return axios.get(URL+`findPage?page=${page}`);
 }
-const total = () => {
-    return axios.get(URL+`total`);
-}
-const createCart = (code,amount) => {
-    return axios.post(URL + "create",{code,amount})
+
+const findByUserCode = (userCode) => {
+    return axios.get(URL+ `userCode/${userCode}`);
 }
 
-const updateCart = (id,code,amount) => {
-    return  axios.put(URL + `update/${id}`,{code,amount})
+const findByUserCodeV2 = (userCode) => {
+    return axios.get(URL+ `userCodeV2/${userCode}`);
+}
+
+const total = (userCode) => {
+    return axios.get(URL+`total/${userCode}`);
+}
+const createCart = (userCode,code,amount) => {
+    return axios.post(URL + "create",{userCode,code,amount})
+}
+
+const updateCart = (id,userCode,code,amount) => {
+    return  axios.put(URL + `update/${id}`,{userCode,code,amount})
 }
 
 const deleteCart = (id) => {
@@ -22,4 +31,4 @@ const deleteCart = (id) => {
 const findAllCartPage = (page) => {
     return axios.get(URL+`findPage?page=${page}`).then(data => data);
 }
-export{findAllCart,createCart,updateCart,deleteCart,total,findAllCartPage}
+export{findAllCart,findByUserCode,findByUserCodeV2,createCart,updateCart,deleteCart,total,findAllCartPage}

@@ -6,20 +6,29 @@ import ImageSlider from '../silder/ImgSlider';
 import ModalCheckRemove from '../modal/ModalCheckRemove';
 import '../entity/Menu.scss'
 import { useSelector } from 'react-redux';
-import { SelectAuth } from '../../../auth-service/redux/AuthSelector';
-const Menu = ({ id, name, code, price, usd, imgUrl, description , totalStarInTotalUser, menuData, menuList, data,loadData }) => {
+import { SelectAuth, SelectTokenResponse } from '../../../auth-service/redux/AuthSelector';
+const Menu = ({ id, name, code, price, usd, imgUrl, description , totalStarInTotalUser, menuData, menuList, data,loadData,isDelete }) => {
   const [showModal, setShowModal] = useState(false);
   const [showModalCheck, setShowModalCheck] = useState(false);
   const [getImgUrl, setGetImgUrl] = useState("");
   const [isUpdate, setIsUpdate] = useState(false);
+  const tokenRespone = useSelector(SelectTokenResponse);
   const isAuth = useSelector(SelectAuth);
+  const [isDeleted,setIsDeleted] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
-      const base64Image = await imgUrl();
-      setGetImgUrl(base64Image);
+      if(!isDeleted) {
+        const base64Image = await imgUrl();
+        console.log(base64Image);
+        setGetImgUrl(base64Image);
+        setIsDeleted(false);
+      }
+      return;
     };
     fetchData();
   }, [imgUrl]);
+
+  
 
   const hanldleUpdate = (event) => {
     event.preventDefault();
@@ -36,10 +45,14 @@ const Menu = ({ id, name, code, price, usd, imgUrl, description , totalStarInTot
     setShowModal(true);
   }
 
+  const handleDelete = (value) => {
+    setIsDeleted(value);
+  }
+
   return (
 
     <div className='d-flex justify-content-center'>
-      <Card style={{ width: '20rem', height: '27rem' }} className='d-flex'>
+      <Card style={{ width: '20rem', height: '29rem' }} className='d-flex'>
         <ImageSlider imageUrls={getImgUrl} />
         <Card.Body>
           <Card.Title>
@@ -59,7 +72,7 @@ const Menu = ({ id, name, code, price, usd, imgUrl, description , totalStarInTot
                 <i class="fas fa-info-circle"></i>
                 &nbsp;Details</Button>
             </div>
-            {isAuth ? (
+            {isAuth && tokenRespone.user.role === "ADMIN"  ? (
               <>
                 <div className='ms-2'>
                   <Button variant="warning" onClick={(event) => hanldleUpdate(event)}>
@@ -101,6 +114,7 @@ const Menu = ({ id, name, code, price, usd, imgUrl, description , totalStarInTot
           name={name}
           afterRemove={menuList}
           data={data}
+          isDelete={handleDelete}
         ></ModalCheckRemove>
       )}
     </div>

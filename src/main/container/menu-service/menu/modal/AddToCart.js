@@ -3,16 +3,20 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { toast } from 'react-toastify';
 import { createCart, updateCart } from '../../cart/service/CartService';
+import { useSelector } from 'react-redux';
+import { SelectTokenResponse } from '../../../auth-service/redux/AuthSelector';
 
 const AddToCart = ({ code,id, show, onHide, name, isSuccess,isUpdate ,loadData}) => {
   const [amount, setAmount] = useState(0);
+  const tokenRespone = useSelector(SelectTokenResponse);
   const handlePlus = () => {
     setAmount(amount+1);
   }
   const addCart = async () => {
+    const userCode = tokenRespone.user.userCode;
     try {
       if(isUpdate ===true) {
-        const res = await updateCart(id,code, amount);
+        const res = await updateCart(id,userCode,code, amount);
         console.log(res);
         if (res && res.data.responseData) {
           onHide();
@@ -20,7 +24,7 @@ const AddToCart = ({ code,id, show, onHide, name, isSuccess,isUpdate ,loadData})
           loadData()
         }
       }else{
-        const res = await createCart(code, amount);
+        const res = await createCart(userCode,code, amount);
         console.log(res);
         if (res && res.data.responseData) {
           onHide();

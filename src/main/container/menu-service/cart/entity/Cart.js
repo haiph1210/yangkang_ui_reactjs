@@ -15,19 +15,8 @@ const Cart = ({ stt, id, code, nameResponse, imgResponse, price, amount, initPri
     const handleDeleteCart = () => {
       setDeleteCart(true);
     }
+    console.log(selectedIds);
 
-    // const handleChange = (event) => {
-    //         const selectedId = event.target.parentElement.nextElementSibling.textContent;
-    //         console.log(selectedId);
-    //         setSelectedIds(prevSelectedIds => {
-    //           if (event.target.checked) {
-    //             return [...prevSelectedIds, selectedId];
-    //           } else {
-    //             return prevSelectedIds.filter(id => id !== selectedId);
-    //           }
-    //         });
-
-    // }
 
     const handleChange = (event) => {
         const selectedId = event.target.parentElement.nextElementSibling.textContent;
@@ -40,10 +29,11 @@ const Cart = ({ stt, id, code, nameResponse, imgResponse, price, amount, initPri
         });
       };
       
-  
+      
     useEffect(() => {
-            sendData(selectedIds);
-            console.log(selectedIds);
+      if (selectedIds.length > 0) {
+        sendData(selectedIds);
+      }
     }, [selectedIds]);
   
     return (

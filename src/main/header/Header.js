@@ -16,9 +16,15 @@ import { total } from '../container/menu-service/cart/service/CartService';
 
 const Header = ({ onClickHideOrShow }) => {
   const [totalCarts,setTotalCarts] = useState(0);
+  const isAuth = useSelector(SelectAuth);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [hideSlider, setHideSlider] = useState(false);
+  const tokenResponse = useSelector(SelectTokenResponse);
+  
   const fetchTotalCart = async () => {
     try {
-      const totalCart = await total();
+      const totalCart = await total(tokenResponse.user.userCode);
       if (totalCart && totalCart.data.responseData) {
         setTotalCarts(totalCart.data.responseData);
       }
@@ -26,13 +32,10 @@ const Header = ({ onClickHideOrShow }) => {
       console.log(error);
     }
   };
-
-  fetchTotalCart();
-  const tokenResponse = useSelector(SelectTokenResponse);
-  const isAuth = useSelector(SelectAuth);
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [hideSlider, setHideSlider] = useState(false);
+  useEffect(() => {
+    fetchTotalCart();
+  },[])
+ 
 
   const handleUpdateHide = (event) => {
     event.preventDefault();
