@@ -41,24 +41,7 @@ const ListPayment = () => {
         return format(new Date(hour), 'hh:mm:ss a');
     }
 
-    const convertPercentToString = (percent) => {
-        let ONE = "ONE";
-        let TWO = "TWO";
-        let FIVE = "FIVE";
-        let TEN = "TEN";
-        switch (percent) {
-            case ONE:
-                return '1%';
-            case TWO:
-                return '2%';
-            case FIVE:
-                return '5%';
-            case TEN:
-                return '10%';
-            default:
-                return 'NULL';
-        }
-    }
+
 
     return (
         <div>

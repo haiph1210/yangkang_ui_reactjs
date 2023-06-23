@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { findOrderById } from '../../order/service/OrderService';
 import { selectOrderId } from '../../order/redux/OrderSelect';
 import { findOrderByIdAction } from '../../order/redux/OrderAction';
-import { format } from 'date-fns';
 import { NumberFormat } from 'intl';
+import { format } from 'date-fns';
 
 const OrderById = () => {
     const dispatch = useDispatch();
+    
     const formatPrice = (price) => {
         const formatter = new NumberFormat('vi-VN', {
             style: 'currency',
@@ -24,13 +25,14 @@ const OrderById = () => {
         });
         return formatter.format(priceUSD);
     };
-    const formatCreatedDate = (createdDate) => {
-        return format(new Date(createdDate), 'dd/MM/yyyy');
-    }
+    // const formatCreatedDate = (createdDate) => {
+    //     return format(new Date(createdDate), 'dd/MM/yyyy');
+    // }
 
-    const formatHour= (hour) => {
-        return format(new Date(hour),'hh:mm:ss a');
-    }
+    // const formatHour = (hour) => {
+    //     return format(new Date(hour), 'hh:mm:ss a');
+    // }
+
 
 
     const order = useSelector(selectOrderId);
@@ -58,8 +60,8 @@ const OrderById = () => {
                 <div>TotalAmount: {order.totalAmount}</div>
                 <div>TotalPrice: {formatPrice(order.totalPrice)}</div>
                 <div>Type: {order.type}</div>
-                <div>Hour: {formatHour(order.hour)}</div>
-                <div>CreateDate: {formatCreatedDate(order.createDate)}</div>
+                <div>Hour: {(order.hour)}</div>
+                <div>CreateDate: {(order.createDate)}</div>
 
             </div>
         </div>
