@@ -16,7 +16,7 @@ const ModalCRUD = () => {
 
     }
     return (
-        <div>
+        <div className='border p-4'>
             <div className='d-flex justify-content-between'>
                
                 <div className='d-flex '>

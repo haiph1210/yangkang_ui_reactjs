@@ -52,18 +52,23 @@ const Slider = () => {
                                         &nbsp;
                                         Combo</NavLink>
                                 </NavDropdown.Item>
-                                <NavDropdown.Item>
-                                    <NavLink to={"/combo"} className={"nav-link"} >
+                                {isAuth
+                                ?<>
+                                 <NavDropdown.Item>
+                                    <NavLink to={"/order"} className={"nav-link"} >
                                         <i class="fa-solid fa-cart-arrow-down"></i>
                                         &nbsp;
                                         Order</NavLink>
                                 </NavDropdown.Item>
                                 <NavDropdown.Item>
-                                    <NavLink to={"/combo"} className={"nav-link"} >
+                                    <NavLink to={"/payment"} className={"nav-link"} >
                                         <i class="fa-solid fa-calculator"></i>
                                         &nbsp;
                                         Payment</NavLink>
                                 </NavDropdown.Item>
+                                </>
+                                : null}
+                               
                             </NavDropdown>
                         </Nav>
 
@@ -146,8 +151,49 @@ const Slider = () => {
                                 </NavDropdown>
                             </Nav>}
 
+                            {(tokenResponse && isAuth !== true && tokenResponse.user.role !== 'ADMIN')
+                            ?
+                            ''
+                            :
+                            <Nav>
+                                <NavDropdown title={<span> <i class="fa-solid fa-hotel"></i> Employee-Manager</span>} id="basic-nav-dropdown">
+                                    {(tokenResponse && isAuth !== true && tokenResponse.user.role !== 'ADMIN')
+                                        ?
+                                        <NavDropdown.Item className='fix-lenght'>
+                                            <NavLink
+                                                to={`timeSheetingDay`}
+                                                className={"nav-link"}
+                                            >
+                                                <i class="fa-solid fa-house-chimney"></i>
+                                                &nbsp;
+
+                                                TimeSheetingDay</NavLink>
+                                        </NavDropdown.Item>
+                                        :
+                                        (<>
+                                            <NavDropdown.Item className='fix-lenght'>
+                                                <NavLink
+                                                    to={"/position"}
+                                                    className={"nav-link"} >
+                                                    <i class="fa-solid fa-house-chimney"></i>
+                                                    &nbsp;
+                                                    Position</NavLink>
+                                            </NavDropdown.Item>
+
+                                          
+                                        </>)
+
+                                    }
+
+
+
+                                </NavDropdown>
+                            </Nav>}
+
                     </div>
                 )}
+
+                
                 <div className={`${showSlider === true ? 'main' : 'centered'}`}>
                     <div className='container'><AppRouter /></div>
 

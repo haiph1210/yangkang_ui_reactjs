@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { createOrder, findAllOrder, findAllOrderByUserCode, updateOrderApproved, updateOrderRefuse } from "../service/OrderService";
+import { createOrder, findAllOrder, findAllOrderByUserCode, findOrderById, updateOrderApproved, updateOrderRefuse } from "../service/OrderService";
 
 export const findAllOrderPageAction = (page) => {
     return async(dispatch) => {
@@ -24,6 +24,22 @@ export const findAllOrderByUserCodeAction = (userCode) => {
             if(res && res.responseData) {
                 dispatch({
                     type: 'Order/findAllByUserCode',
+                    payload: res.responseData
+                })
+            }
+        }catch(err){
+
+        }
+    }
+}
+
+export const findOrderByIdAction = (id) => {
+    return async(dispatch) => {
+        try{
+            const res = await findOrderById(id);
+            if(res) {
+                dispatch({
+                    type: 'Order/findById',
                     payload: res.responseData
                 })
             }
@@ -89,11 +105,13 @@ export const createOrderAction = (personCode,idMenus,idCombos,idCarts,idForms,pe
 }
 
 
-// export const findAllPageAction = () => {
-//     return async(dispatch) => {
+export const findByOrderCode = () => {
+    return async(dispatch) => {
         
-//     }
-// }
+    }
+}
+
+
 // export const findAllPageAction = () => {
 //     return async(dispatch) => {
         

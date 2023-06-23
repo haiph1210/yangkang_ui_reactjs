@@ -6,6 +6,7 @@ import PublicRouterCart from '../main/container/menu-service/cart/router/PublicR
 import PublicRouterCombo from '../main/container/menu-service/combo/router/PubicRouterCombo'
 import PublicRouterForm from '../main/container/restaurant-service/form/router/PublicRouterForm'
 import PublicOrderRouter from '../main/container/menu-service/order/Router/PublicOrderRouter'
+import PublicRouterPayment from '../main/container/menu-service/payment/routers/PublicRouterPayment'
 
 const AppRouter = () => {
   return (
@@ -14,6 +15,7 @@ const AppRouter = () => {
       <PublicRouterCombo></PublicRouterCombo>
       <PublicRouterCart></PublicRouterCart>
       <PublicOrderRouter></PublicOrderRouter>
+      <PublicRouterPayment/>
       <PublicRouterForm></PublicRouterForm>
       <PublicRouterUser></PublicRouterUser>
       <PublicRouterAuth></PublicRouterAuth>

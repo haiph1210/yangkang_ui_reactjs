@@ -9,17 +9,35 @@ import ReactPaginate from 'react-paginate';
 import { SelectTokenResponse } from '../../../auth-service/redux/AuthSelector';
 import { findAllOrderByUserCode } from '../service/OrderService';
 import ModalCRUD from '../modal/ModalCRUD/ModalCRUD';
+import { NumberFormat } from 'intl';
 
 const ListOrder = () => {
     const tokenResponse = useSelector(SelectTokenResponse);
 
     const formatCreatedDate = (createdDate) => {
-        return format(new Date(createdDate), 'dd/MM/yyyy hh-mm-ss');
+        return format(new Date(createdDate), 'dd/MM/yyyy');
     }
 
     const formatHour= (hour) => {
         return format(new Date(hour),'hh:mm:ss a');
     }
+
+    const formatPrice = (price) => {
+        const formatter = new NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+        });
+        return formatter.format(price);
+    };
+    const formatPriceUSD = (priceVND) => {
+        const exchangeRate = 23000; // Tỷ giá hối đoái: 23.000 VND = 1 USD
+        const priceUSD = priceVND / exchangeRate;
+        const formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+        });
+        return formatter.format(priceUSD);
+    };
     const selectOrders = useSelector(selectOrder);
     const selectPageOrder = useSelector(selectTotalPageOrder);
 
@@ -45,7 +63,7 @@ const ListOrder = () => {
 
 
     return (
-        <div>
+        <div className=''>
             <Container className='' >
                 <ModalCRUD/>
                 <Row xs={1} md={3} className="g-sm-4 border mt-3 ms-0 me-0 hanlde-1236 ">
@@ -58,12 +76,13 @@ const ListOrder = () => {
                                 personResponse={item.personResponses}
                                 people={item.people}
                                 totalAmount={item.totalAmount}
-                                totalPrice={item.totalPrice}
+                                totalPrice={formatPrice(item.totalPrice)}
                                 createdDate={formatCreatedDate(item.createDate)}
                                 hour={formatHour(item.hour)}
                                 description={item.description}
                                 type={item.type}
                                 status={item.status}
+                                form={item.forms}
                                 // load={handleDataRes}
                             />
                         </Col>

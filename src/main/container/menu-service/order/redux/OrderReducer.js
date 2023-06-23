@@ -1,6 +1,7 @@
 const initState = {
     orders: [],
     totalPages: 0,
+    order : {}
 }
 
 const OrderReducer = (state = initState, action) => {
@@ -24,6 +25,13 @@ const OrderReducer = (state = initState, action) => {
             return {
                 ...state,
                 orders: action.payload,
+            }
+            break;
+
+        case 'Order/findById':
+            return {
+                ...state,
+                order: action.payload,
             }
             break;
 

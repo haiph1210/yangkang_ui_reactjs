@@ -98,7 +98,14 @@ const Header = ({ onClickHideOrShow }) => {
               <NavLink to={"/home"} className={"nav-link"}>HomePage</NavLink>
               <NavLink to={"/menu"} className={"nav-link"}>Menu</NavLink>
               <NavLink to={"/combo"} className={"nav-link"}>Combo</NavLink>
+              {isAuth
+              ?
+              <>
               <NavLink to={"/order"} className={"nav-link"}>Order</NavLink>
+              <NavLink to={"/payment"} className={"nav-link"}>Payment</NavLink>
+              </>
+              :
+              null}
             </Nav>
             {isAuth
               ? <Nav>
